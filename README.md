@@ -2,7 +2,7 @@
 
 Script dedicado para aquelas pastas criadas em nossos projetos que acabam sendo esquecidas 
 
-Clone o repositório: Primeiro, clone o repositório para sua máquina local:
+Primeiro, clone o repositório para sua máquina local:
 
 ```
 git clone https://github.com/sailleribeiro/script-delete-empty-folders.git
