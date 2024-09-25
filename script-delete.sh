@@ -1,8 +1,16 @@
 #!/bin/bash
 
-# Função para encontrar e listar pastas vazias
+# Lista de pastas que devem ser ignoradas
+IGNORED_DIRS=(
+  "./.git"
+  "./node_modules"
+  "./dist"
+  "./build"
+)
+
+# Função para encontrar e listar pastas vazias, ignorando as cruciais
 find_empty_dirs() {
-  find . -type d -empty  # Busca por diretórios vazios a partir do diretório atual
+  find . -type d -empty | grep -vE "$(printf "|%s" "${IGNORED_DIRS[@]}")"
 }
 
 # Função para excluir a pasta após confirmação
@@ -21,4 +29,3 @@ delete_dir() {
 
 # Rodar o script
 delete_dir
-
