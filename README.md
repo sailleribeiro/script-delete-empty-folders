@@ -5,7 +5,7 @@ Script dedicado para aquelas pastas criadas em nossos projetos que acabam sendo 
 Dê permissão de execução: 
 
 ```
-chmod +x script-delete.sh.
+chmod +x script-delete.sh
 ```
 Execute o script no terminal:
 
