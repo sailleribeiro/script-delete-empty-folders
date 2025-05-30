@@ -10,22 +10,30 @@ IGNORED_DIRS=(
 
 # Função para encontrar e listar pastas vazias, ignorando as cruciais
 find_empty_dirs() {
-  find . -type d -empty | grep -vE "$(printf "|%s" "${IGNORED_DIRS[@]}")"
+  find . -type d -empty | grep -vE "$(printf "%s|" "${IGNORED_DIRS[@]}" | sed 's/|$//')"
 }
 
-# Função para excluir a pasta após confirmação
-delete_dir() {
-  for dir in $(find_empty_dirs); do
-    echo "Pasta vazia encontrada: $dir"
-    read -p "Deseja excluir esta pasta? (s/n): " confirm
-    if [[ "$confirm" == "s" || "$confirm" == "S" ]]; then
-      rmdir "$dir"
-      echo "Pasta $dir excluída!"
-    else
-      echo "Pasta $dir não foi excluída."
-    fi
-  done
+# Função principal
+main() {
+  empty_dirs=$(find_empty_dirs)
+
+  if [[ -z "$empty_dirs" ]]; then
+    echo "Nenhuma pasta vazia encontrada."
+    exit 0
+  fi
+
+  echo "Pastas vazias encontradas:"
+  echo "$empty_dirs"
+  
+  read -p "Deseja excluir todas estas pastas? (s/n): " confirm
+  if [[ "$confirm" == "s" || "$confirm" == "S" ]]; then
+    while IFS= read -r dir; do
+      rmdir "$dir" && echo "Pasta $dir excluída!"
+    done <<< "$empty_dirs"
+  else
+    echo "Nenhuma pasta foi excluída."
+  fi
 }
 
 # Rodar o script
-delete_dir
+main
